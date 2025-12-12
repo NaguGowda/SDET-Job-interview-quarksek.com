@@ -7,30 +7,31 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Function;
 
 public class ViewCourse {
-	WebDriver driver;
+	WebDriver driver = new ChromeDriver();
 	@Test(priority = 1)
-	public void Check() throws InterruptedException {
-				
-		WebDriver driver = new ChromeDriver();
+	public void Check() throws InterruptedException {				
 		
 		driver.get("https://testautomationpractice.blogspot.com/");
 		
 		WebElement Select = driver.findElement(By.xpath("//a[contains(.,\"Udemy Courses\")]"));
 		Select.click();
+		
+		driver.manage().window().maximize();
 		Thread.sleep(5000);
 
 	}
 	
 	@Test(priority = 2)
 	public void Waiting() {
-		
 		Wait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofSeconds(5))
@@ -38,7 +39,7 @@ public class ViewCourse {
 
         WebElement element = wait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("//h2//a[contains(text(),'View Course')]")); // Replace with your element locator
+                return driver.findElement(By.xpath("(//div[@class=\"course\"]/a[text()='View Course'])[1]")); // Replace with your element locator
             }
         });
             
@@ -47,8 +48,19 @@ public class ViewCourse {
 	
 	@Test(priority = 3)
 	public void locatnext() {
-		driver.findElement(By.xpath("//*[@id=\"u493-tabs--138-content-0\"]/div[2]/div[1]/div[1]/div/div[5]/div/button"));		
-		driver.close();
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
+
+		Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(60))
+                .pollingEvery(Duration.ofSeconds(10))
+                .ignoring(NoSuchElemen	tException.class);
+
+        WebElement ReportBtn = wait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(By.xpath("//button[span[text()='Report abuse']]")); // Replace with your element locator
+            }
+        });   
+        ReportBtn.click();
 		
 	}
 }

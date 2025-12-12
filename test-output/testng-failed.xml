@@ -5,7 +5,6 @@
     <classes>
       <class name="com.check.ViewCourse">
         <methods>
-          <include name="Waiting"/>
           <include name="locatnext"/>
         </methods>
       </class> <!-- com.check.ViewCourse -->
